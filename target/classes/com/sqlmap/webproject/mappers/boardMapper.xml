@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springpjt.board.service.impl.BoardMapper">
+	
+	<!-- 작성 -->
+	<insert id="create" parameterType="boardVO">
+	INSERT INTO myBoard (title,content,writer,regDate,viewCnt) 
+	VALUES (#{title},#{content},#{writer},NOW(),0)
+	<selectKey resultType="int" keyProperty="bno" order="AFTER">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+	</insert>
+	
+	<!-- 조회 -->
+	<select id="read" resultType="boardVO">
+	SELECT * 
+	FROM myBoard
+	WHERE bno=#{bno}
+	
+	</select>
+	
+	<!-- 모두 조회 -->
+	<select id="listAll" resultType="boardVO">
+	SELECT *
+	FROM myBoard
+	order by bno DESC
+	LIMIT #{startList}, #{listSize}
+	</select>
+	
+	<!-- 게시글 조회수 증가 -->
+	<update id="increaseViewcnt">
+		UPDATE myBoard SET viewCnt = viewCnt + 1
+		WHERE bno = #{bno}
+	</update>
+	
+	<!-- 수정 -->
+	<update id="update" parameterType="boardVO">
+	UPDATE myBoard
+	SET title= #{title},content = #{content}
+	WHERE bno = #{bno}
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="delete">
+	delete FROM myboard WHERE bno = #{bno}
+	</delete>
+	
+	<!-- 게시물 총 갯수 -->
+	<select id="countBoard" resultType="int">
+	SELECT COUNT(*) as listCnt 
+	FROM myBoard
+	</select>
+	
+	<!-- 파일 등록 -->
+	<insert id="createFile" parameterType="fileVO">
+	/** [boardMapper.xml][com.example.springpjt.board.service.impl.BoardMapper][보드 이미지 등록] **/
+		INSERT INTO TB_FILE
+			(ORI_FILE_NM, SAVE_FILE_NM, THUMB_FILE_NM, UPLOAD_PATH, REF_TYPE, REF_CD, REG_ID, REG_DT)
+		VALUES
+			(#{oriFileNm}, #{saveFileNm}, #{thumbFileNm}, #{uploadPath}, #{refType}, #{refCd}, 'admin', DATE_FORMAT(NOW(),'%Y%m%d%H%i%S'))
+	</insert>
+	
+	<!-- 파일 조회 -->
+	<select id="readFile" resultType="fileVO" parameterType="int">
+	SELECT ORI_FILE_NM, SAVE_FILE_NM, THUMB_FILE_NM, UPLOAD_PATH, REF_TYPE, REF_CD, REG_ID, REG_DT
+	FROM TB_FILE
+	WHERE REF_CD=#{bno}
+	
+	</select>
+	
+</mapper>

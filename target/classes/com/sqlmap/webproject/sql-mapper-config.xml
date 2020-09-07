@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<settings>
+        <setting name="mapUnderscoreToCamelCase" value="true" />
+     </settings>
+    <typeAliases>
+		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+		<typeAlias alias="boardVO" type="com.example.springpjt.board.model.dto.BoardVO"/>
+		<typeAlias alias="schedulerVO" type="com.example.springpjt.scheduler.model.dto.SchedulerVO"/>
+		<typeAlias alias="memberVO" type="com.example.springpjt.member.model.dto.MemberVO"/>
+		<typeAlias alias="commentVO" type="com.example.springpjt.board.model.dto.CommentVO"/>
+		<typeAlias alias="fileVO" type="com.example.springpjt.cmmn.service.FileVO"/>
+	</typeAliases>
+</configuration>

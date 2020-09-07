@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springpjt.member.service.impl.MemberMapper">
+	
+	<!-- 회원 로그인 체크 조회 -->
+	<select id="loginCheck" parameterType="memberVO" resultType="memberVO">
+	/** [memberMapper.xml][com.example.springpjt.member.service.impl.memberMapper][로그인 정보 조회] **/
+		SELECT *
+		FROM memberInfo
+		WHERE userId=#{userId} AND userPw=#{userPw}
+	</select>
+	
+	<!-- 회원가입 -->
+	<insert id="memberJoin" parameterType="memberVO">
+	/** [memberMapper.xml][com.example.springpjt.member.service.impl.memberMapper][회원가입] **/
+	INSERT INTO memberInfo(userId,userPw,userName,userEmail)
+	VALUES (#{userId},#{userPw},#{userName},#{userEmail});
+	</insert>
+	
+	<!-- 회원  중복 ID 조회 -->
+	<select id="duplicateIdCheck" parameterType="memberVO" resultType="int">
+	/** [memberMapper.xml][com.example.springpjt.member.service.impl.memberMapper][회원  중복 ID 조회] **/
+		SELECT COUNT(userId)
+		FROM memberInfo
+		WHERE userId=#{userId}
+	</select>
+	
+</mapper>

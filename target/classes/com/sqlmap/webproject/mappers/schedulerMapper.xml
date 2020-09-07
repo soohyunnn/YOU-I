@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springpjt.scheduler.service.impl.SchedulerMapper">
+	
+	<!-- 작성 -->
+	<insert id="calwrite" parameterType="schedulerVO">
+	/** [schedulerMapper.xml][com.example.springpjt.scheduler.service.impl.SchedulerMapper][일정 추가] **/
+	INSERT INTO calendar (ID,TITLE,CONTENT,RDATE)
+	VALUES (#{id},#{title},#{content},#{rdate})
+	</insert>
+	
+	<!-- 조회 -->
+	<select id="getCalendarList" parameterType="schedulerVO" resultType="schedulerVO">
+	SELECT SEQ,ID,TITLE,CONTENT,RDATE,WDATE
+	FROM (SELECT ROW_NUMBER() OVER( PARTITION BY SUBSTRING(RDATE,1,8) ORDER BY RDATE ASC) RN,SEQ,ID,TITLE,CONTENT,RDATE,WDATE FROM calendar
+	WHERE ID=#{id} AND SUBSTR(RDATE,1,6)=#{rdate}) t
+	WHERE RN BETWEEN 1 AND 5	
+	</select>
+	
+	<!-- 디테일 -->
+	<select id="calDetail" parameterType="int" resultType="schedulerVO">
+		SELECT SEQ,ID,TITLE,CONTENT,RDATE,WDATE
+		FROM calendar
+		WHERE SEQ=#{seq}
+	</select>
+	
+	<!-- 업데이트 -->
+	<update id="calUpdate" parameterType="schedulerVO">
+		UPDATE calendar SET TITLE=#{title}, CONTENT=#{content}, RDATE=#{rdate}, WDATE=now()
+		WHERE SEQ=#{seq}
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="calDelete" parameterType="int">
+	DELETE FROM calendar
+	WHERE SEQ=#{seq}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

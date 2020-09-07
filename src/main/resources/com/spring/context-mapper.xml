@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- SqlSession setup for MyBatis Database Layer -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:/com/sqlmap/webproject/sql-mapper-config.xml" />
+		<property name="mapperLocations" value="classpath:/com/sqlmap/webproject/mappers/*.xml" />
+	</bean>
+
+	<!-- MapperConfigurer setup for MyBatis Database Layer with @Mapper("deptMapper") in DeptMapper Interface -->
+ 	<bean class="egovframework.rte.psl.dataaccess.mapper.MapperConfigurer">
+		<property name="basePackage" value="com.example.springpjt.**.service.impl" />
+	</bean>
+	
+	<!-- SQL 실행시 객체를 생성해주는 것 -->
+	<!--
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:/mybatis-config.xml" />	
+		<property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml" />		
+	</bean>
+	!-->
+	
+	<!-- DB에 사용이 끝나면 sqlSessionFactory에 접근하여 커넥션을 close()를 하는 기능 -->
+	<!-- 이를 추가함으로써 SQL문을 사용할 때마다 커넥션을 일일히 끊어줘야하는 번거로움이 사라짐 -->
+	<!--
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>	
+	</bean> 
+  	!-->
+    
+</beans>
